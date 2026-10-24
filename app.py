@@ -16,13 +16,18 @@ def get_tools_catalog():
                 df_data.append({
                     "Name": t.get("name", ""),
                     "Category": t.get("category", "utility"),
-                    "Price (USDC)": f"${t.get('price', '0.15')}",
+                    "Price (USDC)": f"${t.get('price', '0.05')}",
                     "Description": t.get("description", "")[:100] + "..."
                 })
             return pd.DataFrame(df_data)
     except Exception as e:
         pass
-    return pd.DataFrame([{"Name": "Credit Risk", "Category": "DeFi", "Price (USDC)": "$0.05", "Description": "Real-time credit risk scoring"}])
+    return pd.DataFrame([
+        {"Name": "autonomous-trading-bot-mcp", "Category": "DeFi / Trading", "Price (USDC)": "$0.05", "Description": "Real MACD/RSI indicators computed over 50 live Coinbase Exchange candles"},
+        {"Name": "credit-risk-mcp", "Category": "DeFi", "Price (USDC)": "$0.05", "Description": "Real-time algorithmic credit risk scoring and debt solvency modeling"},
+        {"Name": "stealth-address-generator-mcp", "Category": "Cryptography", "Price (USDC)": "$0.08", "Description": "EIP-5564 ECDH ephemeral stealth address derivation for private settlement"},
+        {"Name": "vouch-agent-trust-verifier", "Category": "Security / Vouch", "Price (USDC)": "$0.02", "Description": "W3C DID and Post-Quantum cryptographic signature validator"}
+    ])
 
 def search_tools(query):
     if not query:
@@ -36,7 +41,7 @@ def search_tools(query):
                 df_data.append({
                     "Name": t.get("name", t.get("id", "")),
                     "Category": t.get("category", "General"),
-                    "Price (USDC)": f"${t.get('price', '0.15')}",
+                    "Price (USDC)": f"${t.get('price', '0.05')}",
                     "Description": t.get("description", "")[:100] + "..."
                 })
             return pd.DataFrame(df_data)
@@ -46,7 +51,7 @@ def search_tools(query):
 
 def inspect_tool(tool_name):
     if not tool_name:
-        return "Please enter a tool slug (e.g., 'credit-risk-mcp')"
+        return "Please enter a tool slug (e.g., 'autonomous-trading-bot-mcp')"
     slug = tool_name.strip().lower()
     try:
         resp = requests.get(f"{API_GATEWAY_URL}/{slug}/server-card.json", timeout=10)
@@ -57,13 +62,13 @@ def inspect_tool(tool_name):
     except Exception as e:
         return f"Error querying tool: {str(e)}"
 
-with gr.Blocks(title="M2MCent MCP Universal Gateway (1,005 AI Agent Micro-Services)", theme=gr.themes.Soft()) as demo:
+with gr.Blocks(title="M2MCent MCP Universal Gateway (1,062 AI Agent Micro-Services)", theme=gr.themes.Soft()) as demo:
     gr.Markdown("# 🚀 M2MCent Universal MCP Gateway")
-    gr.Markdown("Explore, query, and test **1,005 specialized MCP micro-services** for autonomous AI agents monetized via **x402 on Base Mainnet**.")
+    gr.Markdown("Explore, query, and test **1,062 specialized MCP micro-services** (896 Flagship deterministic engines) for autonomous AI agents monetized via **x402 on Base Mainnet**.")
 
     with gr.Tab("🔍 Tool Catalog & Search"):
         with gr.Row():
-            search_input = gr.Textbox(placeholder="Search by keyword (e.g., 'defi', 'credit', 'security', 'solidity', 'zk')...", label="Semantic Tool Search", scale=4)
+            search_input = gr.Textbox(placeholder="Search by keyword (e.g., 'defi', 'credit', 'security', 'solidity', 'zk', 'stealth')...", label="Semantic Tool Search", scale=4)
             search_btn = gr.Button("Search", variant="primary", scale=1)
         
         catalog_table = gr.Dataframe(value=get_tools_catalog(), interactive=False, label="Available M2MCent Micro-Services")
@@ -71,7 +76,7 @@ with gr.Blocks(title="M2MCent MCP Universal Gateway (1,005 AI Agent Micro-Servic
         search_input.submit(fn=search_tools, inputs=[search_input], outputs=[catalog_table])
 
     with gr.Tab("🛠️ Inspect Tool Schema"):
-        tool_slug_input = gr.Textbox(placeholder="e.g. credit-risk-mcp", label="Tool Slug")
+        tool_slug_input = gr.Textbox(placeholder="e.g. autonomous-trading-bot-mcp", label="Tool Slug")
         inspect_btn = gr.Button("Fetch Server Card & Schema", variant="secondary")
         schema_output = gr.Code(language="json", label="MCP Server Card & Capabilities")
         inspect_btn.click(fn=inspect_tool, inputs=[tool_slug_input], outputs=[schema_output])
@@ -90,8 +95,10 @@ with gr.Blocks(title="M2MCent MCP Universal Gateway (1,005 AI Agent Micro-Servic
           }
         }
         ```
-        - **Smart Contract Escrow:** `0xDb48F51A2de8F4a80CD1d0BAdcd18E847734A74a` (Base Mainnet)
+        - **Smart Contract Escrow:** `0x5d47070A36A37DAf417e64FF27a1e5B3F1c84efa` (Base Mainnet)
+        - **Institutional Treasury Safe:** `0x8aaBAB75bE8825d0f5D514a9a5cBa04B7bF84920`
         - **Protocol:** x402 V2 Micropayment Protocol with EIP-3009 TransferWithAuthorization
+        - **Trust & Compliance:** Vouch Protocol Grade A (100/100) & Post-Quantum ML-DSA-65 Readiness
         """)
 
 if __name__ == "__main__":
