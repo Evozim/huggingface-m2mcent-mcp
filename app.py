@@ -86,10 +86,10 @@ def preview_tool_dry_run(tool_name, raw_payload):
         return json.dumps({"error": str(e)}, indent=2)
 
 
-with gr.Blocks(title="M2MCent Universal MCP Gateway (1,057 Deterministic Nodes)", theme=gr.themes.Soft()) as demo:
+with gr.Blocks(title="M2MCent Universal MCP Gateway (1,062 Deterministic Nodes)", theme=gr.themes.Soft()) as demo:
     gr.Markdown("# 🚀 M2MCent Universal MCP Gateway (x402 V2 · Vouch Grade A 100/100)")
     gr.Markdown(
-        "Explore, validate, and connect to **1,057 deterministic AI agent micro-services** (`$0.010`–`$0.250` USDC, `<250ms` compute SLA) "
+        "Explore, validate, and connect to **1,062 deterministic AI agent micro-services** (`$0.010`–`$0.250` USDC, `<250ms` compute SLA) "
         "monetized via **x402 V2 EIP-3009** on **Base Mainnet (`eip155:8453`)**."
     )
 
